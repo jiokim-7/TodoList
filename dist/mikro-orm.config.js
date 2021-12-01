@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("./constants");
 const Post_1 = require("./entities/Post");
 const path_1 = __importDefault(require("path"));
-const User_1 = require("./entities/User");
+const UserInfo_1 = require("./entities/UserInfo");
 exports.default = {
-    entities: [Post_1.Post, User_1.User],
+    entities: [Post_1.Post, UserInfo_1.UserInfo],
     dbName: "tododb",
     debug: !constants_1.__prod__,
     type: "postgresql",

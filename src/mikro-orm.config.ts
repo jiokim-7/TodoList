@@ -2,11 +2,11 @@ import { MikroORM } from "mikro-orm";
 import { __prod__ } from "./constants";
 import { Post } from "./entities/Post";
 import path from "path";
-import { User } from "./entities/User";
+import { UserInfo } from "./entities/UserInfo";
 
 
 export default {
-    entities: [Post, User],
+    entities: [Post, UserInfo],
     dbName: "tododb",
     debug: !__prod__,
     type: "postgresql",

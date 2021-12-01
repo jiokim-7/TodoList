@@ -1,4 +1,4 @@
-import { User } from "../entities/User";
+import { UserInfo } from "../entities/UserInfo";
 import { MyContext } from "src/types";
 import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Resolver } from "type-graphql";
 import argon2 from 'argon2';
@@ -26,8 +26,8 @@ class UserResponse {
     @Field(() => [FieldError], {nullable: true})
     errors?: FieldError[]
 
-    @Field(() => User, {nullable: true})
-    user?: User
+    @Field(() => UserInfo, {nullable: true})
+    user?: UserInfo
 
 }
 
@@ -57,7 +57,7 @@ export class UserResolver {
         }
 
         const hashedPassword = await argon2.hash(options.password)
-        const user = em.create(User, { username: options.username, password: hashedPassword });
+        const user = em.create(UserInfo, { username: options.username, password: hashedPassword });
 
         
         try {
@@ -85,7 +85,7 @@ export class UserResolver {
         @Arg('options') options: UsernamePasswordInput,
         @Ctx() {em, req}: MyContext
     ): Promise<UserResponse> {
-        const user = await em.findOne(User, { username: options.username })
+        const user = await em.findOne(UserInfo, { username: options.username })
         if (!user) {
             return {
                 errors: [

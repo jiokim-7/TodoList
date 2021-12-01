@@ -16,7 +16,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserResolver = void 0;
-const User_1 = require("../entities/User");
+const UserInfo_1 = require("../entities/UserInfo");
 const type_graphql_1 = require("type-graphql");
 const argon2_1 = __importDefault(require("argon2"));
 let UsernamePasswordInput = class UsernamePasswordInput {
@@ -52,8 +52,8 @@ __decorate([
     __metadata("design:type", Array)
 ], UserResponse.prototype, "errors", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => User_1.User, { nullable: true }),
-    __metadata("design:type", User_1.User)
+    (0, type_graphql_1.Field)(() => UserInfo_1.UserInfo, { nullable: true }),
+    __metadata("design:type", UserInfo_1.UserInfo)
 ], UserResponse.prototype, "user", void 0);
 UserResponse = __decorate([
     (0, type_graphql_1.ObjectType)()
@@ -77,7 +77,7 @@ let UserResolver = class UserResolver {
             };
         }
         const hashedPassword = await argon2_1.default.hash(options.password);
-        const user = em.create(User_1.User, { username: options.username, password: hashedPassword });
+        const user = em.create(UserInfo_1.UserInfo, { username: options.username, password: hashedPassword });
         try {
             await em.persistAndFlush(user);
         }
@@ -96,7 +96,7 @@ let UserResolver = class UserResolver {
         return { user };
     }
     async login(options, { em, req }) {
-        const user = await em.findOne(User_1.User, { username: options.username });
+        const user = await em.findOne(UserInfo_1.UserInfo, { username: options.username });
         if (!user) {
             return {
                 errors: [
