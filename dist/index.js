@@ -16,6 +16,7 @@ const user_1 = require("./resolvers/user");
 const connect_redis_1 = __importDefault(require("connect-redis"));
 const express_session_1 = __importDefault(require("express-session"));
 const redis_1 = __importDefault(require("redis"));
+const apollo_server_core_1 = require("apollo-server-core");
 const main = async () => {
     const orm = await core_1.MikroORM.init(mikro_orm_config_1.default);
     await orm.getMigrator().up();
@@ -24,7 +25,10 @@ const main = async () => {
     const redisClient = redis_1.default.createClient();
     app.use((0, express_session_1.default)({
         name: 'qid',
-        store: new RedisStore({ client: redisClient }),
+        store: new RedisStore({
+            client: redisClient,
+            disableTouch: true,
+        }),
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             httpOnly: true,
@@ -40,6 +44,9 @@ const main = async () => {
             resolvers: [hello_1.HelloResolver, post_1.PostResolver, user_1.UserResolver],
             validate: false,
         }),
+        plugins: [
+            (0, apollo_server_core_1.ApolloServerPluginLandingPageGraphQLPlayground)({})
+        ],
         context: ({ req, res }) => ({ em: orm.em, req, res }),
     });
     await apolloServer.start();
